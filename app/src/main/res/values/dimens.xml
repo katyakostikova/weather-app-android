@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="iconCurrentWeatherSize">100sp</dimen>
+    <dimen name="iconDailyForecastWeatherSize">70sp</dimen>
     <dimen name="iconCelsiumDegrees">30sp</dimen>
     <dimen name="city_name">22sp</dimen>
     <dimen name="day_weather_text">18sp</dimen>
