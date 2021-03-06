@@ -1,6 +1,15 @@
 package com.example.weatherapptest.data;
 
+import android.content.Intent;
+
 import com.example.weatherapptest.R;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import static java.lang.Integer.parseInt;
 
 public class WeatherViewInformation {
 
@@ -26,60 +35,57 @@ public class WeatherViewInformation {
         IconAndColorOfCurrentWeather iconAndColorOfCurrentWeather = new IconAndColorOfCurrentWeather();
         switch (weatherCondition) {
             case Thunderstorm:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.thunderstorm);
                 iconAndColorOfCurrentWeather.iconCode = "Q";
                 break;
             case Drizzle:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.drizzle);
                 iconAndColorOfCurrentWeather.iconCode = "l";
                 break;
             case Rain:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.rain);
                 iconAndColorOfCurrentWeather.iconCode = "K";
                 break;
             case Snow:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.snow);
                 iconAndColorOfCurrentWeather.iconCode = "I";
                 break;
             case Smoke:
             case Sand:
             case Ash:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.sand);
                 iconAndColorOfCurrentWeather.iconCode = "C";
                 break;
             case Haze:
             case Mist:
             case Fog:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.mist);
                 iconAndColorOfCurrentWeather.iconCode = "Z";
                 break;
             case Squall:
             case Dust:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.dust);
                 iconAndColorOfCurrentWeather.iconCode = "E";
                 break;
             case Tornado:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.tornado);
                 iconAndColorOfCurrentWeather.iconCode = ":";
                 break;
             case Clear:
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg);
-                iconAndColorOfCurrentWeather.iconCode = "1";
+                Date currentTime = Calendar.getInstance().getTime();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("HH", Locale.getDefault());
+                if(parseInt(dateFormat.format(currentTime)) < 18) {
+                    iconAndColorOfCurrentWeather.iconCode = "1";
+                    iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg);
+                } else {
+                    iconAndColorOfCurrentWeather.iconCode = "6";
+                    iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg_night);
+                }
                 break;
             case Clouds:
-                //TODO
-                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.white);
+                iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clouds);
                 iconAndColorOfCurrentWeather.iconCode = "3";
                 break;
-
         }
         return iconAndColorOfCurrentWeather;
     }

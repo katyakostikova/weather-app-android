@@ -3,7 +3,7 @@ package com.example.weatherapptest.retrofit.models;
 import java.util.List;
 
 public class Daily {
-    long dt;
+    long dt; // date
     long sunrise;
     long sunset;
     Temperature temp;

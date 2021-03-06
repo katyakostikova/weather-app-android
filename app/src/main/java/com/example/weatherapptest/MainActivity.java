@@ -6,8 +6,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -16,9 +22,12 @@ import com.example.weatherapptest.retrofit.IWeatherApi;
 import com.example.weatherapptest.retrofit.models.CurrentWeather;
 import com.example.weatherapptest.retrofit.models.WeatherForecast;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -29,8 +38,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CurrentWeather currentWeather;
     private WeatherForecast weatherForecast;
+    private String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +55,18 @@ public class MainActivity extends AppCompatActivity {
         IWeatherApi iWeatherApi = retrofit.create(IWeatherApi.class);
 
 
-        Call<CurrentWeather> callCurrentWeather = iWeatherApi.currentWeather("kyiv", IWeatherApi.apiKey);
-
-
-        callCurrentWeather.enqueue(new Callback<CurrentWeather>() {
+        //current, daily, hourly forecast
+        Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast("50.431759", "30.517023", "minutely", IWeatherApi.apiKey);
+        callCurrentWeather.enqueue(new Callback<WeatherForecast>() {
             @Override
-            public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-                currentWeather = response.body();
+            public void onResponse(@NotNull Call<WeatherForecast> call, @NotNull Response<WeatherForecast> response) {
+                weatherForecast = response.body();
                 setCurrentWeatherData();
+                setWeatherForecastData();
             }
 
             @Override
-            public void onFailure(Call<CurrentWeather> call, Throwable t) {
+            public void onFailure(@NotNull Call<WeatherForecast> call, @NotNull Throwable t) {
                 t.getMessage();
             }
         });
@@ -65,22 +74,20 @@ public class MainActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
         TextView textViewDayOfTheWeek = findViewById(R.id.textViewDayOfTheWeek);
-        textViewDayOfTheWeek.setText(new SimpleDateFormat("E, dd MMM", Locale.ENGLISH).format(date.getTime()));
+        textViewDayOfTheWeek.setText(new SimpleDateFormat("E, dd MMM").format(date.getTime()));
 
-        //weather forecast
-        Call<WeatherForecast> callWeatherForecast = iWeatherApi.weatherForecast("50.431759", "30.517023", "current,minutely,hourly", IWeatherApi.apiKey);
-        callWeatherForecast.enqueue(new Callback<WeatherForecast>() {
-            @Override
-            public void onResponse(Call<WeatherForecast> call, Response<WeatherForecast> response) {
-                weatherForecast = response.body();
-                setWeatherForecastData();
-            }
+        CardView cardView = findViewById(R.id.cardViewCurrentWeather);
 
-            @Override
-            public void onFailure(Call<WeatherForecast> call, Throwable t) {
-                t.getMessage();
-            }
-        });
+        View.OnClickListener cardViewOnClickListener = v -> {
+            Intent intent = new Intent(MainActivity.this, CurrentWeatherDetails.class);
+            intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
+            intent.putExtra("cityName", cityName);
+            MainActivity.this.startActivity(intent);
+
+        };
+
+        cardView.setOnClickListener(cardViewOnClickListener);
+
     }
 
     private void setCurrentWeatherData() {
@@ -93,13 +100,21 @@ public class MainActivity extends AppCompatActivity {
         CardView cardViewCurrentWeather = findViewById(R.id.cardViewCurrentWeather);
 
         // filling all data for current weather
-        textViewCity.setText(currentWeather.getName());
-        textViewTemperature.setText(String.valueOf((int) currentWeather.getMainWeatherInfo().getTemp()));
-        textViewTemperatureRealFeel.setText(String.valueOf((int) currentWeather.getMainWeatherInfo().getFeels_like()));
-        textViewWeatherText.setText(currentWeather.getWeather().get(0).getMain());
+        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(weatherForecast.getLat(), weatherForecast.getLon(), 1);
+            cityName = addresses.get(0).getLocality();
+            textViewCity.setText(cityName);
+        } catch ( Exception err) {
+            Log.e("CityError", err.getMessage());
+        }
+        textViewTemperature.setText(String.valueOf((int) weatherForecast.getCurrent().getTemp()));
+        textViewTemperatureRealFeel.setText(String.valueOf((int) weatherForecast.getCurrent().getFeelsLike()));
+        textViewWeatherText.setText(weatherForecast.getCurrent().getWeather().get(0).getMain());
 
         //getWeatherVIewInformation
-        WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(currentWeather.getWeather().get(0).getMain());
+        WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(weatherForecast.getCurrent()
+                .getWeather().get(0).getMain());
         WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition);
         textViewWeatherIcon.setText(weatherViewInfo.iconCode);
         cardViewCurrentWeather.setCardBackgroundColor(Color.parseColor(getResources().getString(weatherViewInfo.cardBackgroundColorId)));
