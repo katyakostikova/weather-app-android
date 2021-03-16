@@ -3,6 +3,7 @@ package com.example.weatherapptest;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
+import androidx.navigation.NavType;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,11 +21,13 @@ import android.widget.TextView;
 import com.example.weatherapptest.data.WeatherViewInformation;
 import com.example.weatherapptest.retrofit.IWeatherApi;
 import com.example.weatherapptest.retrofit.models.CurrentWeather;
+import com.example.weatherapptest.retrofit.models.Hourly;
 import com.example.weatherapptest.retrofit.models.WeatherForecast;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -63,6 +66,18 @@ public class MainActivity extends AppCompatActivity {
                 weatherForecast = response.body();
                 setCurrentWeatherData();
                 setWeatherForecastData();
+                CardView cardView = findViewById(R.id.cardViewCurrentWeather);
+
+                View.OnClickListener cardViewOnClickListener = v -> {
+                    Intent intent = new Intent(MainActivity.this, CurrentWeatherDetails.class);
+                    intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
+                    intent.putExtra("cityName", cityName);
+                    intent.putParcelableArrayListExtra("hourly", (ArrayList<Hourly>) weatherForecast.getHourly());
+                    MainActivity.this.startActivity(intent);
+
+                };
+
+                cardView.setOnClickListener(cardViewOnClickListener);
             }
 
             @Override
@@ -75,18 +90,6 @@ public class MainActivity extends AppCompatActivity {
         Date date = calendar.getTime();
         TextView textViewDayOfTheWeek = findViewById(R.id.textViewDayOfTheWeek);
         textViewDayOfTheWeek.setText(new SimpleDateFormat("E, dd MMM").format(date.getTime()));
-
-        CardView cardView = findViewById(R.id.cardViewCurrentWeather);
-
-        View.OnClickListener cardViewOnClickListener = v -> {
-            Intent intent = new Intent(MainActivity.this, CurrentWeatherDetails.class);
-            intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
-            intent.putExtra("cityName", cityName);
-            MainActivity.this.startActivity(intent);
-
-        };
-
-        cardView.setOnClickListener(cardViewOnClickListener);
 
     }
 

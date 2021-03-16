@@ -8,4 +8,8 @@
     <dimen name="day_weather_text">18sp</dimen>
     <dimen name="temperature">20sp</dimen>
     <dimen name="real_feel">16sp</dimen>
+    <dimen name="date_hourly">14sp</dimen>
+    <dimen name="icon_hourly">65sp</dimen>
+    <dimen name="icon_celsium_degrees_hourly">20sp</dimen>
+    <dimen name="icon_hudimity_hourly">30sp</dimen>
 </resources>

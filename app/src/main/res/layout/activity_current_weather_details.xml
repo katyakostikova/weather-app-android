@@ -23,6 +23,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="725dp">
 
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+                    app:layout_constraintVertical_bias="0.018" />
+
                 <TextView
                     android:id="@+id/textViewUnit6"
                     android:layout_width="wrap_content"
@@ -351,8 +363,9 @@
                     tools:text="City, Country" />
 
                 <LinearLayout
-                    android:layout_width="410dp"
-                    android:layout_height="148dp"
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -361,6 +374,7 @@
                     app:layout_constraintVertical_bias="0.036">
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewHourly"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
@@ -375,10 +389,10 @@
                     android:textSize="@dimen/day_weather_text"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.098"
+                    app:layout_constraintHorizontal_bias="0.095"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.557" />
+                    app:layout_constraintVertical_bias="0.568" />
 
                 <TextView
                     android:id="@+id/textViewTempInDet"

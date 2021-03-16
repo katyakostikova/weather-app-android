@@ -1,13 +1,11 @@
 package com.example.weatherapptest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,8 +13,6 @@ import android.widget.TextView;
 import com.example.weatherapptest.data.WeatherViewInformation;
 import com.example.weatherapptest.retrofit.models.CurrentWeather;
 import com.example.weatherapptest.retrofit.models.Hourly;
-
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +24,7 @@ public class CurrentWeatherDetails extends AppCompatActivity {
 
     private CurrentWeather currentWeather;
 
-    private Hourly hourly;
+    private List<Hourly> hourly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +32,7 @@ public class CurrentWeatherDetails extends AppCompatActivity {
         setContentView(R.layout.activity_current_weather_details);
         Intent intent = getIntent();
         currentWeather = intent.getExtras().getParcelable("currentWeather");
+        hourly = intent.getParcelableArrayListExtra("hourly");
 
         //on back button
         ImageButton imageButtonBack = findViewById(R.id.buttonBack);
@@ -76,7 +73,15 @@ public class CurrentWeatherDetails extends AppCompatActivity {
         textViewHumidity.setText(currentWeather.getHumidity() + "%");
         textViewPressure.setText(String.valueOf(currentWeather.getPressure()));
         textViewWindSpeed.setText(Float.toString(currentWeather.getWindSpeed()) + " km/h");
-        textViewUVI.setText(String.valueOf(currentWeather.getUvi()));
+        if (currentWeather.getUvi() <= 2.5) {
+            textViewUVI.setText(R.string.uvi_low);
+        } else if(currentWeather.getUvi() <= 6.5 && currentWeather.getUvi() > 2.5) {
+            textViewUVI.setText(R.string.uvi_medium);
+        } else if(currentWeather.getUvi() <= 8.5 && currentWeather.getUvi() > 6.5) {
+            textViewUVI.setText(R.string.uvi_high);
+        } else if(currentWeather.getUvi() > 8.5) {
+            textViewUVI.setText(R.string.uvi_very_high);
+        }
 
         if ( 22 < currentWeather.getWindDeg() && currentWeather.getWindDeg() <= 68) {
             textViewWindIcon.setText(".");
@@ -98,6 +103,13 @@ public class CurrentWeatherDetails extends AppCompatActivity {
             textViewWindIcon.setText("#");
         }
 
+
+        //recycler view
+
+        RecyclerView recyclerViewHourly = findViewById(R.id.recyclerViewHourly);
+        RecyclerViewHourlyAdapter recyclerViewHourlyAdapter = new RecyclerViewHourlyAdapter(hourly);
+        recyclerViewHourly.setAdapter(recyclerViewHourlyAdapter);
+        recyclerViewHourly.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
 
 

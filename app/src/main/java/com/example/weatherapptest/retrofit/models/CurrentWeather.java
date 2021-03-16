@@ -20,7 +20,7 @@ public class CurrentWeather implements Parcelable {
     int humidity;
     float wind_speed;
     int wind_deg;
-    int uvi;
+    float uvi;
     List<Weather> weather; // weather info (clear, rain...)
 
     protected CurrentWeather(Parcel in) {
@@ -33,12 +33,10 @@ public class CurrentWeather implements Parcelable {
         humidity = in.readInt();
         wind_speed = in.readFloat();
         wind_deg = in.readInt();
-        uvi = in.readInt();
-        weather = new ArrayList<>();
-        in.readTypedList(weather, Weather.CREATOR);
+        uvi = in.readFloat();
+        weather = in.createTypedArrayList(Weather.CREATOR);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(dt);
@@ -50,7 +48,7 @@ public class CurrentWeather implements Parcelable {
         dest.writeInt(humidity);
         dest.writeFloat(wind_speed);
         dest.writeInt(wind_deg);
-        dest.writeInt(uvi);
+        dest.writeFloat(uvi);
         dest.writeTypedList(weather);
     }
 
@@ -111,7 +109,7 @@ public class CurrentWeather implements Parcelable {
         return wind_deg;
     }
 
-    public int getUvi() {
+    public float getUvi() {
         return uvi;
     }
 }
