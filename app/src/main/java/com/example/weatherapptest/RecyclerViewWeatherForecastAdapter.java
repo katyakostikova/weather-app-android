@@ -39,7 +39,7 @@ public class RecyclerViewWeatherForecastAdapter extends RecyclerView.Adapter<Rec
         Date date = new Date(TimeUnit.SECONDS.toMillis(daily.getDt()));
         SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM");
         WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(daily.getWeather().get(0).getMain());
-        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition);
+        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, null);
         //data bind
         holder.textViewDate.setText(dateFormat.format(date));
         holder.textViewWeatherIconDaily.setText(weatherViewInfo.iconCode);

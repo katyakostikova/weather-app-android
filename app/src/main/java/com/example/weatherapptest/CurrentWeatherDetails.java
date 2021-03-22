@@ -15,6 +15,7 @@ import com.example.weatherapptest.retrofit.models.CurrentWeather;
 import com.example.weatherapptest.retrofit.models.Hourly;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -44,7 +45,7 @@ public class CurrentWeatherDetails extends AppCompatActivity {
         //icon and weather text
         WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(currentWeather
                 .getWeather().get(0).getMain());
-        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition);
+        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, Calendar.getInstance().getTime());
         TextView textViewWeatherIconInDet = findViewById(R.id.textViewWeatherIconInDet);
         textViewWeatherIconInDet.setText(weatherViewInfo.iconCode);
         TextView textViewWeatherTextInDet = findViewById(R.id.textViewWeatherTextInDet);

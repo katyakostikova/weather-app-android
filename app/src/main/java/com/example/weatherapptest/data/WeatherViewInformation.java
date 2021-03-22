@@ -1,7 +1,5 @@
 package com.example.weatherapptest.data;
 
-import android.content.Intent;
-
 import com.example.weatherapptest.R;
 
 import java.text.SimpleDateFormat;
@@ -31,7 +29,7 @@ public class WeatherViewInformation {
         Clouds
     }
 
-    public static IconAndColorOfCurrentWeather getWeatherViewInfo(WeatherCondition weatherCondition) {
+    public static IconAndColorOfCurrentWeather getWeatherViewInfo(WeatherCondition weatherCondition, Date currentTime) {
         IconAndColorOfCurrentWeather iconAndColorOfCurrentWeather = new IconAndColorOfCurrentWeather();
         switch (weatherCondition) {
             case Thunderstorm:
@@ -72,14 +70,18 @@ public class WeatherViewInformation {
                 iconAndColorOfCurrentWeather.iconCode = ":";
                 break;
             case Clear:
-                Date currentTime = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("HH", Locale.getDefault());
-                if(parseInt(dateFormat.format(currentTime)) < 18) {
+                if(currentTime == null) {
                     iconAndColorOfCurrentWeather.iconCode = "1";
                     iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg);
                 } else {
-                    iconAndColorOfCurrentWeather.iconCode = "6";
-                    iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg_night);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("HH", Locale.getDefault());
+                    if(parseInt(dateFormat.format(currentTime)) < 18 && parseInt(dateFormat.format(currentTime)) > 5) {
+                        iconAndColorOfCurrentWeather.iconCode = "1";
+                        iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg);
+                    } else {
+                        iconAndColorOfCurrentWeather.iconCode = "6";
+                        iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg_night);
+                    }
                 }
                 break;
             case Clouds:

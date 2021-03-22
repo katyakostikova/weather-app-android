@@ -1,12 +1,16 @@
 package com.example.weatherapptest;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
-import androidx.navigation.NavType;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
@@ -16,16 +20,15 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.example.weatherapptest.data.WeatherViewInformation;
 import com.example.weatherapptest.retrofit.IWeatherApi;
-import com.example.weatherapptest.retrofit.models.CurrentWeather;
 import com.example.weatherapptest.retrofit.models.Hourly;
 import com.example.weatherapptest.retrofit.models.WeatherForecast;
 
-import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,12 +37,11 @@ import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<WeatherForecast> {
 
     private WeatherForecast weatherForecast;
     private String cityName;
@@ -50,41 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Retrofit retrofit = new Retrofit.Builder().
-                baseUrl("https://api.openweathermap.org/").
-                addConverterFactory(GsonConverterFactory.create()).
-                build();
-
-        IWeatherApi iWeatherApi = retrofit.create(IWeatherApi.class);
-
-
-        //current, daily, hourly forecast
-        Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast("50.431759", "30.517023", "minutely", IWeatherApi.apiKey);
-        callCurrentWeather.enqueue(new Callback<WeatherForecast>() {
-            @Override
-            public void onResponse(@NotNull Call<WeatherForecast> call, @NotNull Response<WeatherForecast> response) {
-                weatherForecast = response.body();
-                setCurrentWeatherData();
-                setWeatherForecastData();
-                CardView cardView = findViewById(R.id.cardViewCurrentWeather);
-
-                View.OnClickListener cardViewOnClickListener = v -> {
-                    Intent intent = new Intent(MainActivity.this, CurrentWeatherDetails.class);
-                    intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
-                    intent.putExtra("cityName", cityName);
-                    intent.putParcelableArrayListExtra("hourly", (ArrayList<Hourly>) weatherForecast.getHourly());
-                    MainActivity.this.startActivity(intent);
-
-                };
-
-                cardView.setOnClickListener(cardViewOnClickListener);
-            }
-
-            @Override
-            public void onFailure(@NotNull Call<WeatherForecast> call, @NotNull Throwable t) {
-                t.getMessage();
-            }
-        });
+        LoaderManager.getInstance(this).initLoader(1, null, this);
 
         Calendar calendar = Calendar.getInstance();
         Date date = calendar.getTime();
@@ -118,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         //getWeatherVIewInformation
         WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(weatherForecast.getCurrent()
                 .getWeather().get(0).getMain());
-        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition);
+        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, Calendar.getInstance().getTime());
         textViewWeatherIcon.setText(weatherViewInfo.iconCode);
         cardViewCurrentWeather.setCardBackgroundColor(Color.parseColor(getResources().getString(weatherViewInfo.cardBackgroundColorId)));
     }
@@ -129,5 +97,79 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewWeatherForecastAdapter recyclerViewWeatherForecastAdapter = new RecyclerViewWeatherForecastAdapter(weatherForecast.getDaily());
         recyclerViewWeatherForecast.setAdapter(recyclerViewWeatherForecastAdapter);
         recyclerViewWeatherForecast.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setCardViewOnClickListener() {
+        CardView cardView = findViewById(R.id.cardViewCurrentWeather);
+
+        View.OnClickListener cardViewOnClickListener = v -> {
+            Intent intent = new Intent(MainActivity.this, CurrentWeatherDetails.class);
+            intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
+            intent.putExtra("cityName", cityName);
+            intent.putParcelableArrayListExtra("hourly", (ArrayList<Hourly>) weatherForecast.getHourly());
+            MainActivity.this.startActivity(intent);
+
+        };
+
+        cardView.setOnClickListener(cardViewOnClickListener);
+    }
+
+
+    @NonNull
+    @Override
+    public androidx.loader.content.Loader<WeatherForecast> onCreateLoader(int id, @Nullable Bundle args) {
+        return new WeatherForecastLoader(getApplicationContext());
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull androidx.loader.content.Loader<WeatherForecast> loader, WeatherForecast data) {
+        if(data != null) {
+            this.weatherForecast = data;
+            setCurrentWeatherData();
+            setWeatherForecastData();
+            setCardViewOnClickListener();
+        } else {
+            Toast.makeText( this, "Server error", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull androidx.loader.content.Loader<WeatherForecast> loader) {
+
+    }
+
+
+    private static class WeatherForecastLoader extends AsyncTaskLoader<WeatherForecast> {
+
+        public WeatherForecastLoader(@NonNull Context context) {
+            super(context);
+        }
+
+        @Nullable
+        @Override
+        public WeatherForecast loadInBackground() {
+            WeatherForecast weatherForecast = null;
+            Retrofit retrofit = new Retrofit.Builder().
+                    baseUrl("https://api.openweathermap.org/").
+                    addConverterFactory(GsonConverterFactory.create()).
+                    build();
+
+            IWeatherApi iWeatherApi = retrofit.create(IWeatherApi.class);
+
+            Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast("50.431759", "30.517023", "minutely", IWeatherApi.apiKey);
+            try {
+                Response<WeatherForecast> response = callCurrentWeather.execute();
+                weatherForecast = response.body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return weatherForecast;
+        }
+
+        @Override
+        protected void onStartLoading() {
+            super.onStartLoading();
+            forceLoad();
+        }
     }
 }

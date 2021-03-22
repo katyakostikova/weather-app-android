@@ -43,7 +43,7 @@ public class RecyclerViewHourlyAdapter extends RecyclerView.Adapter<RecyclerView
         holder.textViewTemperature.setText(String.valueOf((int) hourly.getTemp()));
         //icon
         WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(hourly.getWeather().get(0).getMain());
-        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition);
+        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, date);
         holder.textViewIcon.setText(weatherViewInfo.iconCode);
     }
 
