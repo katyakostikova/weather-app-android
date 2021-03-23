@@ -18,6 +18,9 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +29,6 @@ import com.example.weatherapptest.data.WeatherViewInformation;
 import com.example.weatherapptest.retrofit.IWeatherApi;
 import com.example.weatherapptest.retrofit.models.Hourly;
 import com.example.weatherapptest.retrofit.models.WeatherForecast;
-
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -114,7 +116,34 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         cardView.setOnClickListener(cardViewOnClickListener);
     }
 
+    //MENU
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.app_menu, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_bar_search:
+                return true;
+            case R.id.app_bar_settings:
+                return true;
+            case R.id.app_bar_update:
+                LoaderManager.getInstance(this).restartLoader(1, null, this);
+                TextView textViewIcon = findViewById(R.id.textViewWeatherIcon);
+                CardView cardView = findViewById(R.id.cardViewCurrentWeather);
+                textViewIcon.setText("•");
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.white));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //LOADER
     @NonNull
     @Override
     public androidx.loader.content.Loader<WeatherForecast> onCreateLoader(int id, @Nullable Bundle args) {
@@ -135,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoaderReset(@NonNull androidx.loader.content.Loader<WeatherForecast> loader) {
-
     }
 
 
@@ -173,3 +201,4 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 }
+

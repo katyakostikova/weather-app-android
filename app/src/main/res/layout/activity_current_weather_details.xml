@@ -48,7 +48,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textViewRealFeelInDet"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.555"
+                    app:layout_constraintVertical_bias="0.571"
                     tools:text="›" />
 
                 <TextView
@@ -269,7 +269,7 @@
                     app:layout_constraintHorizontal_bias="0.701"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.557" />
+                    app:layout_constraintVertical_bias="0.568" />
 
                 <TextView
                     android:id="@+id/textViewRealFeelInDet"
@@ -283,7 +283,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textView3"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.555"
+                    app:layout_constraintVertical_bias="0.571"
                     tools:text="11" />
 
                 <TextView
@@ -299,7 +299,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textViewTempInDet"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.555"
+                    app:layout_constraintVertical_bias="0.571"
                     tools:text="›" />
 
                 <ImageButton
@@ -406,7 +406,7 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textView"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.555"
+                    app:layout_constraintVertical_bias="0.571"
                     tools:text="11" />
 
                 <View
