@@ -4,4 +4,6 @@
     <string name="uvi_medium">Medium</string>
     <string name="uvi_high">High</string>
     <string name="uvi_very_high">Very high</string>
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">°F</string>
 </resources>

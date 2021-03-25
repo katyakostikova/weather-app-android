@@ -130,6 +130,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             case R.id.app_bar_search:
                 return true;
             case R.id.app_bar_settings:
+                Intent intent = new Intent(this, AppSettingsActivity.class);
+                this.startActivity(intent);
                 return true;
             case R.id.app_bar_update:
                 LoaderManager.getInstance(this).restartLoader(1, null, this);
