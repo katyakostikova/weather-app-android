@@ -1,5 +1,6 @@
 package com.example.weatherapptest;
 
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.example.weatherapptest.data.WeatherViewInformation;
 import com.example.weatherapptest.retrofit.models.Daily;
 
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -20,9 +23,11 @@ import java.util.concurrent.TimeUnit;
 public class RecyclerViewWeatherForecastAdapter extends RecyclerView.Adapter<RecyclerViewWeatherForecastAdapter.DailyForecastViewHolder> {
 
     private final List<Daily> dailyForecast;
+    private final String units;
 
-    public RecyclerViewWeatherForecastAdapter(List<Daily> daily) {
+    public RecyclerViewWeatherForecastAdapter(List<Daily> daily, String units) {
         dailyForecast = daily;
+        this.units = units;
     }
 
     @NonNull
@@ -43,8 +48,19 @@ public class RecyclerViewWeatherForecastAdapter extends RecyclerView.Adapter<Rec
         //data bind
         holder.textViewDate.setText(dateFormat.format(date));
         holder.textViewWeatherIconDaily.setText(weatherViewInfo.iconCode);
-        holder.textViewTempDay.setText(String.valueOf((int) daily.getTemp().getDay()));
-        holder.textViewTempNight.setText(String.valueOf((int) daily.getTemp().getNight()));
+
+        boolean isCelsius = false;
+        String unitCelsius = holder.itemView.getContext().getString(R.string.celsius);
+        if(units.equals(unitCelsius)) {
+            isCelsius = true;
+            holder.textViewUnitInDaily.setText(R.string.celsius);
+            holder.textViewUnitInDaily2.setText(R.string.celsius);
+        } else {
+            holder.textViewUnitInDaily.setText(R.string.fahrenheit);
+            holder.textViewUnitInDaily2.setText(R.string.fahrenheit);
+        }
+        holder.textViewTempDay.setText(String.valueOf((int) daily.getTemp().getDay(isCelsius)));
+        holder.textViewTempNight.setText(String.valueOf((int) daily.getTemp().getNight(isCelsius)));
     }
 
     @Override
@@ -58,6 +74,8 @@ public class RecyclerViewWeatherForecastAdapter extends RecyclerView.Adapter<Rec
         protected TextView textViewWeatherIconDaily;
         protected TextView textViewTempDay;
         protected TextView textViewTempNight;
+        protected TextView textViewUnitInDaily;
+        protected TextView textViewUnitInDaily2;
 
         public DailyForecastViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +83,8 @@ public class RecyclerViewWeatherForecastAdapter extends RecyclerView.Adapter<Rec
             textViewWeatherIconDaily = itemView.findViewById(R.id.textViewWeatherIconDaily);
             textViewTempDay = itemView.findViewById(R.id.textViewTempDay);
             textViewTempNight = itemView.findViewById(R.id.textViewTempNight);
+            textViewUnitInDaily = itemView.findViewById(R.id.textViewUnitInDaily);
+            textViewUnitInDaily2 = itemView.findViewById(R.id.textViewUnitInDaily2);
         }
     }
 }

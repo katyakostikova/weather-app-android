@@ -63,8 +63,21 @@ public class CurrentWeatherDetails extends AppCompatActivity {
         TextView textViewCityInDet = findViewById(R.id.textViewCityInDet);
 
         textViewCityInDet.setText(intent.getExtras().getString("cityName"));
-        textViewTempInDet.setText(String.valueOf((int) currentWeather.getTemp()));
-        textViewRealFeelInDet.setText(String.valueOf((int) currentWeather.getFeelsLike()));
+
+        String units = intent.getExtras().getString("units");
+        boolean isCelsius = false;
+        TextView textViewUnitInCurrent = findViewById(R.id.textViewUnitInCurrent);
+        TextView textViewUnitInCurrent2 = findViewById(R.id.textViewUnitInCurrent2);
+        if(units.equals(getResources().getString(R.string.celsius))) {
+            isCelsius = true;
+            textViewUnitInCurrent.setText(R.string.celsius);
+            textViewUnitInCurrent2.setText(R.string.celsius);
+        } else {
+            textViewUnitInCurrent.setText(R.string.fahrenheit);
+            textViewUnitInCurrent2.setText(R.string.fahrenheit);
+        }
+        textViewTempInDet.setText(String.valueOf((int) currentWeather.getTemp(isCelsius)));
+        textViewRealFeelInDet.setText(String.valueOf((int) currentWeather.getFeelsLike(isCelsius)));
 
         Date sunrise = new Date(TimeUnit.SECONDS.toMillis(currentWeather.getSunrise()));
         Date sunset = new Date(TimeUnit.SECONDS.toMillis(currentWeather.getSunset()));
@@ -108,7 +121,7 @@ public class CurrentWeatherDetails extends AppCompatActivity {
         //recycler view
 
         RecyclerView recyclerViewHourly = findViewById(R.id.recyclerViewHourly);
-        RecyclerViewHourlyAdapter recyclerViewHourlyAdapter = new RecyclerViewHourlyAdapter(hourly);
+        RecyclerViewHourlyAdapter recyclerViewHourlyAdapter = new RecyclerViewHourlyAdapter(hourly, units);
         recyclerViewHourly.setAdapter(recyclerViewHourlyAdapter);
         recyclerViewHourly.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 

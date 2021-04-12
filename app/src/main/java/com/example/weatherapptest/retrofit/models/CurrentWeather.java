@@ -1,12 +1,8 @@
 package com.example.weatherapptest.retrofit.models;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.annotation.RequiresApi;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class CurrentWeather implements Parcelable {
@@ -85,12 +81,18 @@ public class CurrentWeather implements Parcelable {
         return sunset;
     }
 
-    public float getTemp() {
-        return temp- 273;
+    public float getTemp(boolean isCelsius) {
+        if(isCelsius) {
+            return temp - 273;
+        }
+        return ((temp - 273)*9/5+32);
     }
 
-    public float getFeelsLike() {
-        return feels_like- 273;
+    public float getFeelsLike(boolean isCelsius) {
+        if(isCelsius) {
+            return feels_like - 273;
+        }
+        return ((feels_like - 273)*9/5+32);
     }
 
     public int getPressure() {

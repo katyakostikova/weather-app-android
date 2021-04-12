@@ -90,17 +90,16 @@
                         android:id="@+id/textViewUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/artill_clean_icons"
-                        android:text="›"
+                        android:fontFamily="@font/baloo2_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/iconCelsiumDegrees"
+                        android:textSize="@dimen/temperature"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/textViewTemperature"
                         app:layout_constraintTop_toBottomOf="@+id/textViewDayOfTheWeek"
                         app:layout_constraintVertical_bias="0.047"
-                        tools:text="›" />
+                        tools:text="C" />
 
                     <TextView
                         android:id="@+id/textViewWeatherIcon"
@@ -167,17 +166,16 @@
                         android:id="@+id/textViewUnit2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/artill_clean_icons"
-                        android:text="›"
+                        android:fontFamily="@font/baloo2_regular"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/iconCelsiumDegrees"
+                        android:textSize="@dimen/temperature"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/textViewTemperatureRealFeel"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.944"
-                        tools:text="›" />
+                        tools:text="C" />
 
                     <TextView
                         android:id="@+id/textView2"

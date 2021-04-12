@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -47,12 +48,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private WeatherForecast weatherForecast;
     private String cityName;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences(AppSettingsActivity.settingsFileName, MODE_PRIVATE);
 
         LoaderManager.getInstance(this).initLoader(1, null, this);
 
@@ -60,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Date date = calendar.getTime();
         TextView textViewDayOfTheWeek = findViewById(R.id.textViewDayOfTheWeek);
         textViewDayOfTheWeek.setText(new SimpleDateFormat("E, dd MMM").format(date.getTime()));
-
     }
 
     private void setCurrentWeatherData() {
@@ -81,8 +83,20 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         } catch ( Exception err) {
             Log.e("CityError", err.getMessage());
         }
-        textViewTemperature.setText(String.valueOf((int) weatherForecast.getCurrent().getTemp()));
-        textViewTemperatureRealFeel.setText(String.valueOf((int) weatherForecast.getCurrent().getFeelsLike()));
+
+        boolean isCelsius = false;
+        TextView textViewUnit = findViewById(R.id.textViewUnit);
+        TextView textViewUnit2 = findViewById(R.id.textViewUnit2);
+        if(sharedPreferences.getString("UNIT_PARAMS", getResources().getString(R.string.celsius)).equals(getResources().getString(R.string.celsius))) {
+            isCelsius = true;
+            textViewUnit.setText(R.string.celsius);
+            textViewUnit2.setText(R.string.celsius);
+        } else {
+            textViewUnit.setText(R.string.fahrenheit);
+            textViewUnit2.setText(R.string.fahrenheit);
+        }
+        textViewTemperature.setText(String.valueOf((int) weatherForecast.getCurrent().getTemp(isCelsius)));
+        textViewTemperatureRealFeel.setText(String.valueOf((int) weatherForecast.getCurrent().getFeelsLike(isCelsius)));
         textViewWeatherText.setText(weatherForecast.getCurrent().getWeather().get(0).getMain());
 
         //getWeatherVIewInformation
@@ -96,7 +110,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void setWeatherForecastData() {
         RecyclerView recyclerViewWeatherForecast = findViewById(R.id.recyclerViewWeatherForecast);
         weatherForecast.getDaily().remove(0); // 0 index element is current day
-        RecyclerViewWeatherForecastAdapter recyclerViewWeatherForecastAdapter = new RecyclerViewWeatherForecastAdapter(weatherForecast.getDaily());
+        RecyclerViewWeatherForecastAdapter recyclerViewWeatherForecastAdapter = new RecyclerViewWeatherForecastAdapter(weatherForecast.getDaily(),
+                sharedPreferences.getString("UNIT_PARAMS", getResources().getString(R.string.celsius)));
         recyclerViewWeatherForecast.setAdapter(recyclerViewWeatherForecastAdapter);
         recyclerViewWeatherForecast.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -109,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
             intent.putExtra("cityName", cityName);
             intent.putParcelableArrayListExtra("hourly", (ArrayList<Hourly>) weatherForecast.getHourly());
+            intent.putExtra("units", sharedPreferences.getString("UNIT_PARAMS", getResources().getString(R.string.celsius)));
             MainActivity.this.startActivity(intent);
-
         };
 
         cardView.setOnClickListener(cardViewOnClickListener);

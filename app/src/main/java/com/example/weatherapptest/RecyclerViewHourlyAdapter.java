@@ -1,5 +1,6 @@
 package com.example.weatherapptest;
 
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,11 @@ import java.util.concurrent.TimeUnit;
 public class RecyclerViewHourlyAdapter extends RecyclerView.Adapter<RecyclerViewHourlyAdapter.HourlyViewHoler> {
 
     private final List<Hourly> hourlyList;
+    private final String units;
 
-    public RecyclerViewHourlyAdapter(List<Hourly> hourly) {
+    public RecyclerViewHourlyAdapter(List<Hourly> hourly, String units) {
         hourlyList = hourly;
+        this.units = units;
     }
 
     @NonNull
@@ -40,7 +43,16 @@ public class RecyclerViewHourlyAdapter extends RecyclerView.Adapter<RecyclerView
         SimpleDateFormat dateFormat = new SimpleDateFormat("d MMM HH:mm");
         holder.textViewDate.setText(dateFormat.format(date));
         holder.textViewHumidity.setText(hourly.getHumidity() + "%");
-        holder.textViewTemperature.setText(String.valueOf((int) hourly.getTemp()));
+
+        boolean isCelsius = false;
+        String unitCelsius = holder.itemView.getContext().getString(R.string.celsius);
+        if(units.equals(unitCelsius)) {
+            isCelsius = true;
+            holder.textViewUnitHourly.setText(R.string.celsius);
+        } else {
+            holder.textViewUnitHourly.setText(R.string.fahrenheit);
+        }
+        holder.textViewTemperature.setText(String.valueOf((int) hourly.getTemp(isCelsius)));
         //icon
         WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(hourly.getWeather().get(0).getMain());
         WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, date);
@@ -57,6 +69,7 @@ public class RecyclerViewHourlyAdapter extends RecyclerView.Adapter<RecyclerView
         public TextView textViewTemperature;
         public TextView textViewIcon;
         public TextView textViewHumidity;
+        public TextView textViewUnitHourly;
 
         public HourlyViewHoler(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +77,7 @@ public class RecyclerViewHourlyAdapter extends RecyclerView.Adapter<RecyclerView
             textViewTemperature = itemView.findViewById(R.id.textViewTemperatureHourly);
             textViewIcon = itemView.findViewById(R.id.textViewWeatherIconHourly);
             textViewHumidity = itemView.findViewById(R.id.textViewHudimityHourly);
+            textViewUnitHourly = itemView.findViewById(R.id.textViewUnitHourly);
         }
 
     }

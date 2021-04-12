@@ -57,8 +57,11 @@ public class Hourly implements Parcelable {
         return dt;
     }
 
-    public float getTemp() {
-        return temp- 273;
+    public float getTemp(boolean isCelsius) {
+        if(isCelsius) {
+            return temp - 273;
+        }
+        return ((temp - 273)*9/5+32);
     }
 
     public int getHumidity() {

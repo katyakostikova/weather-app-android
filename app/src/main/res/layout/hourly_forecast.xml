@@ -26,15 +26,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:fontFamily="@font/artill_clean_icons"
-        android:text="›"
+        android:fontFamily="@font/baloo2_regular"
         android:textColor="@color/black"
-        android:textSize="@dimen/icon_celsium_degrees_hourly"
+        android:textSize="@dimen/date_hourly"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textViewTemperatureHourly"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="›" />
+        tools:text="C" />
 
     <TextView
         android:id="@+id/textViewWeatherIconHourly"
