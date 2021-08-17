@@ -3,7 +3,6 @@ package com.example.weatherapptest.data;
 import com.example.weatherapptest.R;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -29,7 +28,7 @@ public class WeatherViewInformation {
         Clouds
     }
 
-    public static IconAndColorOfCurrentWeather getWeatherViewInfo(WeatherCondition weatherCondition, Date currentTime) {
+    public static IconAndColorOfCurrentWeather getWeatherViewInfo(WeatherCondition weatherCondition, Date currentTime, Date sunrise, Date sunset) {
         IconAndColorOfCurrentWeather iconAndColorOfCurrentWeather = new IconAndColorOfCurrentWeather();
         switch (weatherCondition) {
             case Thunderstorm:
@@ -75,7 +74,8 @@ public class WeatherViewInformation {
                     iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg);
                 } else {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("HH", Locale.getDefault());
-                    if(parseInt(dateFormat.format(currentTime)) < 18 && parseInt(dateFormat.format(currentTime)) > 5) {
+                    if(parseInt(dateFormat.format(currentTime)) < parseInt(dateFormat.format(sunset))
+                            && parseInt(dateFormat.format(currentTime)) > parseInt(dateFormat.format(sunrise))) {
                         iconAndColorOfCurrentWeather.iconCode = "1";
                         iconAndColorOfCurrentWeather.cardBackgroundColorId = (R.color.clear_bg);
                     } else {
