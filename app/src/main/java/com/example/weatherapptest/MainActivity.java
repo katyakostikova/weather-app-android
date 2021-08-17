@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.weatherapptest.data.WeatherViewInformation;
 import com.example.weatherapptest.retrofit.IWeatherApi;
+import com.example.weatherapptest.retrofit.models.Daily;
 import com.example.weatherapptest.retrofit.models.Hourly;
 import com.example.weatherapptest.retrofit.models.WeatherForecast;
 
@@ -38,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -102,7 +104,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         //getWeatherVIewInformation
         WeatherViewInformation.WeatherCondition weatherCondition = WeatherViewInformation.WeatherCondition.valueOf(weatherForecast.getCurrent()
                 .getWeather().get(0).getMain());
-        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, Calendar.getInstance().getTime());
+        Date sunrise = new Date(TimeUnit.SECONDS.toMillis(weatherForecast.getCurrent().getSunrise()));
+        Date sunset = new Date(TimeUnit.SECONDS.toMillis(weatherForecast.getCurrent().getSunset()));
+        WeatherViewInformation.IconAndColorOfCurrentWeather weatherViewInfo = WeatherViewInformation.getWeatherViewInfo(weatherCondition, Calendar.getInstance().getTime(), sunrise, sunset);
         textViewWeatherIcon.setText(weatherViewInfo.iconCode);
         cardViewCurrentWeather.setCardBackgroundColor(Color.parseColor(getResources().getString(weatherViewInfo.cardBackgroundColorId)));
     }
@@ -124,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
             intent.putExtra("cityName", cityName);
             intent.putParcelableArrayListExtra("hourly", (ArrayList<Hourly>) weatherForecast.getHourly());
+            intent.putParcelableArrayListExtra("daily", (ArrayList<Daily>) weatherForecast.getDaily());
             intent.putExtra("units", sharedPreferences.getString("UNIT_PARAMS", getResources().getString(R.string.celsius)));
             MainActivity.this.startActivity(intent);
         };
@@ -142,8 +147,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.app_bar_search:
-                return true;
             case R.id.app_bar_settings:
                 Intent intent = new Intent(this, AppSettingsActivity.class);
                 this.startActivity(intent);
