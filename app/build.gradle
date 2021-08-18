@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+def apikeyPropertiesFile = rootProject.file("apikeys.properties")
+def apikeyProperties = new Properties()
+apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -23,6 +27,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "PLACES_API_KEY", apikeyProperties['PLACES_API_KEY'])
+            buildConfigField("String", "WEATHER_API_KEY", apikeyProperties['WEATHER_API_KEY'])
+        }
+        debug {
+            buildConfigField("String", "PLACES_API_KEY", apikeyProperties['PLACES_API_KEY'])
+            buildConfigField("String", "WEATHER_API_KEY", apikeyProperties['WEATHER_API_KEY'])
         }
     }
     compileOptions {

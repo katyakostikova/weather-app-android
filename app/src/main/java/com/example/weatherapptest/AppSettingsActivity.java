@@ -45,6 +45,12 @@ public class AppSettingsActivity extends AppCompatActivity {
             });
         unitDialog.show();;
         });
+
+        CardView cardViewCity = findViewById(R.id.cardViewCity);
+        cardViewCity.setOnClickListener(v -> {
+            /*TODO
+            Create new activity and add fragment there, open here new activty, start activity for result*/
+        });
     }
 
     private void saveUnitSettings(boolean isCelsius) {

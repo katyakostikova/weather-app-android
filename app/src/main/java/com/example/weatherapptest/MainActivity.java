@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             IWeatherApi iWeatherApi = retrofit.create(IWeatherApi.class);
 
-            Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast("50.431759", "30.517023", "minutely", IWeatherApi.apiKey);
+            Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast("50.431759", "30.517023", "minutely", BuildConfig.WEATHER_API_KEY);
             try {
                 Response<WeatherForecast> response = callCurrentWeather.execute();
                 weatherForecast = response.body();
