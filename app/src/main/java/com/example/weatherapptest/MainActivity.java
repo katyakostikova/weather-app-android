@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private WeatherForecast weatherForecast;
     private String cityName;
     private SharedPreferences sharedPreferences;
+    public static String cityLat;
+    public static String cityLon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences(AppSettingsActivity.settingsFileName, MODE_PRIVATE);
+        cityLat = sharedPreferences.getString("CITY_LAT", "50.431759");
+        cityLon = sharedPreferences.getString("CITY_LON", "30.517023");
 
         LoaderManager.getInstance(this).initLoader(1, null, this);
 
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             IWeatherApi iWeatherApi = retrofit.create(IWeatherApi.class);
 
-            Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast("50.431759", "30.517023", "minutely", BuildConfig.WEATHER_API_KEY);
+            Call<WeatherForecast> callCurrentWeather = iWeatherApi.weatherForecast(cityLat, cityLon, "minutely", BuildConfig.WEATHER_API_KEY);
             try {
                 Response<WeatherForecast> response = callCurrentWeather.execute();
                 weatherForecast = response.body();
