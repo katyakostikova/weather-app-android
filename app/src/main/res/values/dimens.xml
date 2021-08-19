@@ -15,4 +15,20 @@
     <dimen name="settings_text">18sp</dimen>
     <dimen name="settings_text_params">16sp</dimen>
     <dimen name="units_dialog_text">18sp</dimen>
+
+    <dimen name="tablet_iconCurrentWeatherSize">105sp</dimen>
+    <dimen name="tablet_iconDailyForecastWeatherSize">75sp</dimen>
+    <dimen name="tablet_iconCelsiumDegrees">35sp</dimen>
+    <dimen name="tablet_iconWindSpeed">45sp</dimen>
+    <dimen name="tablet_city_name">27sp</dimen>
+    <dimen name="tablet_day_weather_text">23sp</dimen>
+    <dimen name="tablet_temperature">25sp</dimen>
+    <dimen name="tablet_real_feel">21sp</dimen>
+    <dimen name="tablet_date_hourly">19sp</dimen>
+    <dimen name="tablet_icon_hourly">70sp</dimen>
+    <dimen name="tablet_icon_celsium_degrees_hourly">25sp</dimen>
+    <dimen name="tablet_icon_hudimity_hourly">35sp</dimen>
+    <dimen name="tablet_settings_text">23sp</dimen>
+    <dimen name="tablet_settings_text_params">21sp</dimen>
+    <dimen name="tablet_units_dialog_text">23sp</dimen>
 </resources>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textViewUnitTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:fontFamily="@font/baloo2_regular"
+        android:text="Choose unit:"
+        android:textColor="@color/black"
+        android:textSize="@dimen/tablet_units_dialog_text" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonC"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:fontFamily="@font/baloo2_regular"
+            android:text="@string/celsius"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:backgroundTint="@color/clouds" />
+
+        <Button
+            android:id="@+id/buttonF"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:clickable="true"
+            android:fontFamily="@font/baloo2_regular"
+            android:text="@string/fahrenheit"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:backgroundTint="@color/clouds" />
+    </LinearLayout>
+
+</LinearLayout>
