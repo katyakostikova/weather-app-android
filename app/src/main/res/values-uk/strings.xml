@@ -1,0 +1,28 @@
+<resources>
+    <string name="uvi_low">Низький</string>
+    <string name="uvi_medium">Середній</string>
+    <string name="uvi_high">Високий</string>
+    <string name="uvi_very_high">Дуже високий</string>
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">°F</string>
+    <string name="darkmode">Нічна тема: </string>
+    <string name="settings">Налаштування</string>
+    <string name="unit">Одиниця виміру:</string>
+    <string name="city">Місто: </string>
+    <string name="back">Назад</string>
+    <string name="uvindex">УФ-індекс:&#160;</string>
+    <string name="humidity">Вологість:&#160;</string>
+    <string name="pressure">Тиск:&#160;</string>
+    <string name="sunset">Захід:&#160;</string>
+    <string name="sunrise">Світанок:&#160;</string>
+    <string name="real_feel">Відчувається:&#160;</string>
+    <string name="temperature">Температура:&#160;</string>
+    <string name="click_for_more">Натисніть, щоб дізнатися більше</string>
+    <string name="choose_unit">Виберіть одиницю виміру:</string>
+    <string name="km_per_h">&#160;км/год</string>
+
+
+    <string name="icon_weather_loading">•</string>
+    <string name="icon_humidity">5</string>
+    <string name="app_name">Погода</string>
+</resources>

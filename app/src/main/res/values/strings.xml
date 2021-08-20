@@ -6,4 +6,23 @@
     <string name="uvi_very_high">Very high</string>
     <string name="celsius">°C</string>
     <string name="fahrenheit">°F</string>
+    <string name="darkmode">Night mode:</string>
+    <string name="settings">Settings</string>
+    <string name="unit">Unit:</string>
+    <string name="city">City:</string>
+    <string name="back">Back</string>
+    <string name="uvindex">UV index:&#160;</string>
+    <string name="humidity">Humidity:&#160;</string>
+    <string name="pressure">Pressure:&#160;</string>
+    <string name="sunset">Sunset:&#160;</string>
+    <string name="sunrise">Sunrise:&#160;</string>
+    <string name="real_feel">Real feel:&#160;</string>
+    <string name="temperature">Temperature:&#160;</string>
+    <string name="click_for_more">Click for more</string>
+    <string name="choose_unit">Choose unit:</string>
+    <string name="km_per_h">&#160;km/h</string>
+
+
+    <string name="icon_weather_loading">•</string>
+    <string name="icon_humidity">5</string>
 </resources>

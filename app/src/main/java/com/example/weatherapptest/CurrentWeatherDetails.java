@@ -91,7 +91,7 @@ public class CurrentWeatherDetails extends AppCompatActivity {
         textViewSunset.setText(dateFormat.format(sunset));
         textViewHumidity.setText(currentWeather.getHumidity() + "%");
         textViewPressure.setText(String.valueOf(currentWeather.getPressure()));
-        textViewWindSpeed.setText(Float.toString(currentWeather.getWindSpeed()) + " km/h");
+        textViewWindSpeed.setText(Float.toString(currentWeather.getWindSpeed()) + getResources().getString(R.string.km_per_h));
         if (currentWeather.getUvi() <= 2.5) {
             textViewUVI.setText(R.string.uvi_low);
         } else if(currentWeather.getUvi() <= 6.5 && currentWeather.getUvi() > 2.5) {

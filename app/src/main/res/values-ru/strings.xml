@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Погода</string>
+    <string name="uvi_low">Низкий</string>
+    <string name="uvi_medium">Средний</string>
+    <string name="uvi_high">Высокий</string>
+    <string name="uvi_very_high">Очень высокий</string>
+    <string name="celsius">°C</string>
+    <string name="fahrenheit">°F</string>
+    <string name="darkmode">Ночная тема:</string>
+    <string name="settings">Настройки</string>
+    <string name="unit">Единица измерения:</string>
+    <string name="city">Город:</string>
+    <string name="back">Назад</string>
+    <string name="uvindex">УФ-индекс:&#160;</string>
+    <string name="humidity">Влажность:&#160;</string>
+    <string name="pressure">Давление:&#160;</string>
+    <string name="sunset">Закат:&#160;</string>
+    <string name="sunrise">Рассвет:&#160;</string>
+    <string name="real_feel">Ощущается:&#160;</string>
+    <string name="temperature">Температура:&#160;</string>
+    <string name="click_for_more">Нажмите, чтобы узнать больше</string>
+    <string name="choose_unit">Выберите единицу измерения:</string>
+    <string name="km_per_h">&#160;км/ч</string>
+
+    <string name="icon_weather_loading">•</string>
+    <string name="icon_humidity">5</string>
+</resources>
