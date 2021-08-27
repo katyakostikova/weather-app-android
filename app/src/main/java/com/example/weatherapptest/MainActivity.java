@@ -14,11 +14,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,8 +34,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -49,7 +44,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<WeatherForecast> {
 
     private WeatherForecast weatherForecast;
-    private String cityName;
     private SharedPreferences sharedPreferences;
     public static String cityLat;
     public static String cityLon;
@@ -85,15 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         CardView cardViewCurrentWeather = findViewById(R.id.cardViewCurrentWeather);
 
         // filling all data for current weather
-        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(weatherForecast.getLat(), weatherForecast.getLon(), 1);
-            cityName = addresses.get(0).getLocality();
-            textViewCity.setText(cityName);
-        } catch ( Exception err) {
-            Log.e("CityError", err.getMessage());
-        }
-
+        textViewCity.setText(sharedPreferences.getString("CITY_NAME", getResources().getString(R.string.kyiv)));
         boolean isCelsius = false;
         TextView textViewUnit = findViewById(R.id.textViewUnit);
         TextView textViewUnit2 = findViewById(R.id.textViewUnit2);
@@ -134,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         View.OnClickListener cardViewOnClickListener = v -> {
             Intent intent = new Intent(MainActivity.this, CurrentWeatherDetails.class);
             intent.putExtra("currentWeather", (Parcelable) weatherForecast.getCurrent());
-            intent.putExtra("cityName", cityName);
+            intent.putExtra("cityName", sharedPreferences.getString("CITY_NAME", getResources().getString(R.string.kyiv)));
             intent.putParcelableArrayListExtra("hourly", (ArrayList<Hourly>) weatherForecast.getHourly());
             intent.putParcelableArrayListExtra("daily", (ArrayList<Daily>) weatherForecast.getDaily());
             intent.putExtra("units", sharedPreferences.getString("UNIT_PARAMS", getResources().getString(R.string.celsius)));

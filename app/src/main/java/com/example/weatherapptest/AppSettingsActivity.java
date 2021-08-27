@@ -65,7 +65,7 @@ public class AppSettingsActivity extends AppCompatActivity {
                 saveUnitSettings(false);
                 unitDialog.cancel();
             });
-        unitDialog.show();;
+            unitDialog.show();
         });
 
         //city settings
@@ -73,7 +73,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         cardViewCity.setOnClickListener(v -> {
 
             if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), BuildConfig.PLACES_API_KEY);
+                Places.initialize(getApplicationContext(), BuildConfig.PLACES_API_KEY);
             }
 
             List<Place.Field> fields = Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME);
@@ -86,7 +86,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         //theme seettings
         Switch switchNightMode = findViewById(R.id.switchNightMode);
         switchNightMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked) {
+            if (isChecked) {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 saveThemeSettings(isChecked);
             } else {
@@ -105,7 +105,7 @@ public class AppSettingsActivity extends AppCompatActivity {
     private void saveUnitSettings(boolean isCelsius) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         TextView textViewUnitsParams = findViewById(R.id.textViewUnitsParams);
-        if(isCelsius) {
+        if (isCelsius) {
             editor.putString("UNIT_PARAMS", getResources().getString(R.string.celsius));
             textViewUnitsParams.setText(R.string.celsius);
         } else {
@@ -120,27 +120,16 @@ public class AppSettingsActivity extends AppCompatActivity {
         textViewUnitsParams.setText(sharedPreferences.getString("UNIT_PARAMS", getResources().getString(R.string.celsius)));
 
         TextView textViewCityParams = findViewById(R.id.textViewCityParams);
-        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(Double.parseDouble(sharedPreferences.getString("CITY_LAT", "50.431759")),
-                    Double.parseDouble(sharedPreferences.getString("CITY_LON", "30.517023")), 1);
-            String cityName = addresses.get(0).getLocality();
-            textViewCityParams.setText(cityName);
-
-        } catch ( Exception err) {
-            Log.e("CityError", err.getMessage());
-        }
+        textViewCityParams.setText(sharedPreferences.getString("CITY_NAME", getResources().getString(R.string.kyiv)));
 
         Switch switchNightMode = findViewById(R.id.switchNightMode);
-        if(sharedPreferences.getBoolean("NIGHT_MODE", false)) {
+        if (sharedPreferences.getBoolean("NIGHT_MODE", false)) {
             switchNightMode.setChecked(true);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
             switchNightMode.setChecked(false);
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
-
-
     }
 
     private static class UnitDialog extends Dialog {
@@ -168,34 +157,28 @@ public class AppSettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                if(data != null) {
+                if (data != null) {
                     Place place = Autocomplete.getPlaceFromIntent(data);
                     TextView textViewCityParams = findViewById(R.id.textViewCityParams);
-                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-                    try {
-                        List<Address> addresses = geocoder.getFromLocation(place.getLatLng().latitude, place.getLatLng().longitude, 1);
-                        String cityName = addresses.get(0).getLocality();
-                        textViewCityParams.setText(cityName);
+                    textViewCityParams.setText(place.getName());
 
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("CITY_LAT", Double.toString(place.getLatLng().latitude));
-                        editor.putString("CITY_LON", Double.toString(place.getLatLng().longitude));
-                        editor.apply();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("CITY_LAT", Double.toString(place.getLatLng().latitude));
+                    editor.putString("CITY_LON", Double.toString(place.getLatLng().longitude));
+                    editor.putString("CITY_NAME", place.getName());
+                    editor.apply();
 
-                        Intent i = getBaseContext().getPackageManager().
-                                getLaunchIntentForPackage(getBaseContext().getPackageName());
-                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
+                    Intent i = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
 
-                    } catch ( Exception err) {
-                        Log.e("CityError", err.getMessage());
-                    }
+
                 }
             } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-                if(data != null) {
+                if (data != null) {
                     Status status = Autocomplete.getStatusFromIntent(data);
-                    Toast.makeText( this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
                 }
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.

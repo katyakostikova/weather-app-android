@@ -24,4 +24,5 @@
 
     <string name="icon_weather_loading">•</string>
     <string name="icon_humidity">5</string>
+    <string name="kyiv">Киев</string>
 </resources>

@@ -66,10 +66,10 @@
                         android:textSize="@dimen/day_weather_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.888"
+                        app:layout_constraintHorizontal_bias="0.816"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.311"
+                        app:layout_constraintVertical_bias="0.295"
                         tools:text="Day" />
 
                     <TextView
@@ -127,7 +127,7 @@
                         android:textSize="@dimen/day_weather_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.171"
+                        app:layout_constraintHorizontal_bias="0.153"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textViewWeatherIcon"
                         app:layout_constraintVertical_bias="0.0"
