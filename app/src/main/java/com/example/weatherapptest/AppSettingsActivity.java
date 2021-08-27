@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,6 @@ public class AppSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_settings);
         sharedPreferences = getSharedPreferences(settingsFileName, MODE_PRIVATE);
@@ -68,6 +68,7 @@ public class AppSettingsActivity extends AppCompatActivity {
         unitDialog.show();;
         });
 
+        //city settings
         CardView cardViewCity = findViewById(R.id.cardViewCity);
         cardViewCity.setOnClickListener(v -> {
 
@@ -81,6 +82,24 @@ public class AppSettingsActivity extends AppCompatActivity {
                     .build(this);
             startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
         });
+
+        //theme seettings
+        Switch switchNightMode = findViewById(R.id.switchNightMode);
+        switchNightMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                saveThemeSettings(isChecked);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                saveThemeSettings(isChecked);
+            }
+        });
+    }
+
+    private void saveThemeSettings(boolean isChecked) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("NIGHT_MODE", isChecked);
+        editor.apply();
     }
 
     private void saveUnitSettings(boolean isCelsius) {
@@ -111,6 +130,17 @@ public class AppSettingsActivity extends AppCompatActivity {
         } catch ( Exception err) {
             Log.e("CityError", err.getMessage());
         }
+
+        Switch switchNightMode = findViewById(R.id.switchNightMode);
+        if(sharedPreferences.getBoolean("NIGHT_MODE", false)) {
+            switchNightMode.setChecked(true);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            switchNightMode.setChecked(false);
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+
     }
 
     private static class UnitDialog extends Dialog {
@@ -140,7 +170,6 @@ public class AppSettingsActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 if(data != null) {
                     Place place = Autocomplete.getPlaceFromIntent(data);
-                    Log.i("TAG", "Place: " + place.getName() + ", " + place.getLatLng());
                     TextView textViewCityParams = findViewById(R.id.textViewCityParams);
                     Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                     try {

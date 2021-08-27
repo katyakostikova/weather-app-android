@@ -39,7 +39,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
@@ -57,10 +56,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sharedPreferences = getSharedPreferences(AppSettingsActivity.settingsFileName, MODE_PRIVATE);
+        if(sharedPreferences.getBoolean("NIGHT_MODE", false)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         cityLat = sharedPreferences.getString("CITY_LAT", "50.431759");
         cityLon = sharedPreferences.getString("CITY_LON", "30.517023");
 
@@ -161,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 TextView textViewIcon = findViewById(R.id.textViewWeatherIcon);
                 CardView cardView = findViewById(R.id.cardViewCurrentWeather);
                 textViewIcon.setText("•");
-                cardView.setCardBackgroundColor(getResources().getColor(R.color.white));
+                cardView.setCardBackgroundColor(getResources().getColor(R.color.background_color));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

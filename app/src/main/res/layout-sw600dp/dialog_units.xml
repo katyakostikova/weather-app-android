@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/background_color"
     android:orientation="vertical">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_margin="10dp"
         android:fontFamily="@font/baloo2_regular"
         android:text="@string/choose_unit"
-        android:textColor="@color/black"
+        android:textColor="@color/all_text"
         android:textSize="@dimen/tablet_units_dialog_text" />
 
 
@@ -36,9 +36,9 @@
             android:clickable="false"
             android:fontFamily="@font/baloo2_regular"
             android:text="@string/celsius"
-            android:textColor="@color/black"
+            android:textColor="@color/all_text"
             android:textSize="20sp"
-            app:backgroundTint="@color/clouds" />
+            app:backgroundTint="@color/unit_button" />
 
         <Button
             android:id="@+id/buttonF"
@@ -48,9 +48,9 @@
             android:clickable="true"
             android:fontFamily="@font/baloo2_regular"
             android:text="@string/fahrenheit"
-            android:textColor="@color/black"
+            android:textColor="@color/all_text"
             android:textSize="20sp"
-            app:backgroundTint="@color/clouds" />
+            app:backgroundTint="@color/unit_button" />
     </LinearLayout>
 
 </LinearLayout>
